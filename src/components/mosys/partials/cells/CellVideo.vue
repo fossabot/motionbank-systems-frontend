@@ -6,6 +6,7 @@
         :src="video.body || fauxVideo",
         @ready="handlePlayerReady",
         @play="handlePlayerPlaying",
+        @pause="handlePlayerPause",
         @time="handlePlayerTimeChange")
 
     template(v-else)
@@ -25,7 +26,8 @@
       return {
         video: {},
         videoTime: -1,
-        player: {}
+        player: {},
+        skipEmit: false
       }
     },
     computed: {
@@ -56,6 +58,19 @@
           })
       }
       if (this.display && this.messenger) {
+        this.messenger.$on('video-started-playing', (signature, time) => {
+          if (_this.player.id() !== signature.playerId && _this.player.paused()) {
+            _this.skipEmit = true
+            _this.player.currentTime(time)
+            _this.player.play()
+          }
+        })
+        this.messenger.$on('video-paused', signature => {
+          if (_this.player.id() !== signature.playerId && !_this.player.paused()) {
+            _this.skipEmit = true
+            _this.player.pause()
+          }
+        })
         this.messenger.$on('annotation-trigger', (annotation, annotationGlobalTime) => {
           if (_this.video.target &&
               annotation.target.id === _this.video.target.id) {
@@ -71,7 +86,7 @@
     methods: {
       getSignature () {
         if (this.video) {
-          return {origin: this.video, type: 'Video'}
+          return {origin: this.video, type: 'Video', playerId: this.player.id ? this.player.id() : null}
         }
         else {
           return {origin: this.cell, type: '2DCell'}
@@ -82,7 +97,18 @@
         this.player = player
       },
       handlePlayerPlaying (event) {
-        this.messenger.$emit('video-started-playing', this.getSignature())
+        if (this.skipEmit) {
+          this.skipEmit = false
+          return
+        }
+        this.messenger.$emit('video-started-playing', this.getSignature(), this.player.currentTime())
+      },
+      handlePlayerPause (event) {
+        if (this.skipEmit) {
+          this.skipEmit = false
+          return
+        }
+        this.messenger.$emit('video-paused', this.getSignature())
       },
       handlePlayerTimeChange (localTime) {
         let globalTime = Date.now()

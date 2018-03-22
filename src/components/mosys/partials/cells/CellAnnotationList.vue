@@ -32,6 +32,7 @@
 <script>
   import { QItem, QItemSeparator, QListHeader, QInput } from 'quasar-framework'
   import { DateTime } from 'luxon'
+  import deepcopy from 'deepcopy'
   import constants from '../../../../lib/constants'
   import Username from '../../../shared/partials/Username'
   import VideoTitle from '../../../shared/partials/VideoTitle'
@@ -66,6 +67,42 @@
       const _this = this
       this.videoUuid = this.cell.content
       if (this.messenger) {
+        const automationTemplate = {
+          author: this.$store.state.auth.payload.userId,
+          type: 'Annotation',
+          body: {
+            type: 'TextualBody',
+            purpose: 'automating',
+            value: undefined
+          },
+          target: {
+            id: this.map.uuid,
+            type: this.map.type,
+            selector: {
+              type: 'Fragment',
+              value: undefined
+            }
+          }
+        }
+        this.messenger.$on('video-start-playing', (time, signature) => {
+          const anno = deepcopy(automationTemplate)
+          anno.body.value = JSON.stringify({
+            event: 'video-start-playing',
+            time,
+            signature
+          })
+          anno.target.selector.value = new TimelineSelector().isoString
+          console.log(anno)
+        })
+        this.messenger.$on('video-paused', signature => {
+          const anno = deepcopy(automationTemplate)
+          anno.body.value = JSON.stringify({
+            event: 'video-paused',
+            signature
+          })
+          anno.target.selector.value = new TimelineSelector().isoString
+          console.log(anno)
+        })
         this.messenger.$on('video-time-changed', (time, globalTime, origin) => {
           if (origin.type === 'Video' &&
             _this.video.target.id === origin.origin.target.id &&
