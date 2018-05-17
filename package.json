@@ -138,5 +138,13 @@
     "webpack-merge": "^4.1.1"
   },
   "author": "Mainz University of Applied Sciences (Motion Bank Project)",
-  "license": "MIT"
+  "license": "MIT",
+  "appConfig": {
+    "apiHost": "https://motionbank-api.herokuapp.com",
+    "streamerHost": "http://localhost:8888",
+    "frontendHost": "http://localhost:8080",
+    "idField": "uuid",
+    "useAuth0": false,
+    "useWebSockets": false
+  }
 }
