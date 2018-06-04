@@ -9,6 +9,7 @@
 [![Dependency Status](https://tidelift.com/badges/github/motionbank-js/motionbank-systems-frontend?style=flat)](https://tidelift.com/repo/github/motionbank-js/motionbank-systems-frontend)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/068aa9defed5426e91e2c2f4c1e2190d)](https://www.codacy.com/app/motionbank-js/motionbank-systems-frontend)
 [![Maintainability](https://api.codeclimate.com/v1/badges/cba51f9e40aef7db5dec/maintainability)](https://codeclimate.com/github/motionbank-js/motionbank-systems-frontend/maintainability)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmotionbank-js%2Fmotionbank-systems-frontend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmotionbank-js%2Fmotionbank-systems-frontend?ref=badge_shield)
 
 
 ## Install
@@ -53,3 +54,6 @@ npm run dev
 :copyright: 2018 Mainz University of Applied Sciences (Motion Bank Project) – 
 Released under the [MIT](https://github.com/motionbank-js/motionbank-systems-frontend/blob/master/LICENSE) license
 
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmotionbank-js%2Fmotionbank-systems-frontend.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmotionbank-js%2Fmotionbank-systems-frontend?ref=badge_large)
